@@ -1,16 +1,3 @@
-// import { createPool } from "mysql2/promise";
-
-// export const pool = createPool({
-//     host:"localhost",
-//     user:"root",
-//     password:"Password",
-//     port:3306,
-//     database: "timeTrack",
-// })
-// import {mysql} from "mysql2";
-
-
-// import mysql from "mysql2";
 import mysql from 'mysql2';
 // const {mysql} = pkg;
 

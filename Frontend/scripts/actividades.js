@@ -27,43 +27,76 @@ document.addEventListener("click", function (e) {
 
 
 const sendButtomForm = document.getElementById("sendButtomForm");
+let activityObject
 
-let datesObjet = {};
+function convertTimeToMinutes(time) {
+    const parts = time.split(":");
+    const hours = parseInt(parts[0]);
+    const minutes = parseInt(parts[1]);
+    const seconds = parseInt(parts[2]);
 
-////Obtiene los datos del form
+    // Convertir todo a minutos
+    const totalMinutes = (hours * 60) + minutes + (seconds / 60);
+    return totalMinutes;
+}
+
+function averageSpeed(distancia, totalMinutes) {
+    return distancia / totalMinutes;
+}
+
+function obtainDistance(port) {
+    let distance; // Declarar la variable aquí
+    if (port === "1") {
+        distance = 6.80;
+    } else if (port === "2") {
+        distance = 2.50;
+    } else if (port === "3") {
+        distance = 2.50;
+    }
+    return distance; // Devolver la distancia
+}
+
+//// Obtiene los datos del form
 function getDatesForm(event) {
-    
-    event.preventDefault();
+    event.preventDefault(); // Prevenir el comportamiento por defecto del formulario
     const date = document.getElementById("date").value;
     const sport = document.getElementById("sport").value;
     const nameActivity = document.getElementById("nameActivity").value;
     const time = document.getElementById("time").value;
-    const velocity = document.getElementById("velocity").value;
     const port = document.getElementById("port").value;
-    
-    activityObject = {
-        date: date,
+    const totalMinutes = convertTimeToMinutes(time); // Guardar el resultado
+    const distance = obtainDistance(port); // Llamar y guardar la distancia
+
+    // Calcular la velocidad
+    const velocity = averageSpeed(distance, totalMinutes); 
+
+    // Crear el objeto de actividad
+    const activityObject = {
+        userId: 1,
         sport: sport,
-        nameActivity: nameActivity,
+        port: port,
+        date: date,
         time: time,
-        velocity: velocity,
-        port: port
+        velocity: velocity, 
+        distance: distance,
+        nameActivity: nameActivity,
     };
 
+    console.log(activityObject); // Mostrar el objeto en la consola
     document.getElementById("formActivity").reset();
 }
 
 sendButtomForm.addEventListener("click", (event) => {
     getDatesForm(event);
-    
     fetch("http://localhost:3000/activity", {
-        method:"post",
+        method: "POST",
         headers: {
             'Content-Type': 'application/json',
         },
         body: JSON.stringify(activityObject)
-    })
+    });
 });
+
 
 
 // // Llamamos a la función para enviar la actividad

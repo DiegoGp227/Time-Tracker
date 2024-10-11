@@ -11,6 +11,7 @@
   "license": "ISC",
   "description": "",
   "dependencies": {
+    "cors": "^2.8.5",
     "datatables.net": "^2.1.8",
     "express": "^4.21.0",
     "mysql2": "^3.11.3"

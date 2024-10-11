@@ -1,20 +1,21 @@
 import express from "express";
-import { pool } from "../db/db.js";
-
-console.log("hello console")
+import activityRoutes from "../routes/activitys.routes.js";
+import indexRoutes from "../routes/index.routes.js";
+import cors from "cors";
 
 const app = express()
 const port = 3000
 
+app.use(express.json())
+app.use(cors());
 app.listen(port)
+app.use(indexRoutes)
+app.use(activityRoutes)
 
-app.get("/ping", async (req, res) => { 
-    const [result] = await pool.query ("SELECT 1 + 1");
-    res.json(result[0])
-})
-
+console.log("hello console")
 
 ////Verificar la coneccion a la base de datos
+
 // pool.query('SELECT 1 + 1 AS result', (error, results) => {
 //     if (error) {
 //         console.error("Error al conectar a la base de datos:", error);
@@ -22,11 +23,4 @@ app.get("/ping", async (req, res) => {
 //     }
 //     console.log("Conexión exitosa, resultado de la consulta:", results);
 // });
-
-
-
-app.get("/activity", (req,res) => res.send ("obteniendo actividades"))
-app.post("/activity", (req,res) => res.send ("creando actividades"))
-app.put("/activity", (req,res) => res.send ("actualizando actividades"))
-app.delete("/activity", (req,res) => res.send ("obteniendo actividades"))
 
