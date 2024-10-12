@@ -20,7 +20,7 @@ document.addEventListener("click", function (e) {
     if (menuPerfil.style.display === "flex" && !menuPerfil.contains(e.target) && !e.target.closest('button')) {
         menuPerfil.style.display = "none";
     }
-    
+
     if (menuForm.style.display === "flex" && !menuForm.contains(e.target) && !e.target.closest('button'))
         menuForm.style.display = "none";
 })
@@ -57,7 +57,7 @@ function obtainDistance(port) {
 }
 
 //// Obtiene los datos del form
-function getDatesForm(event) {
+async function getDatesForm(event) {
     event.preventDefault(); // Prevenir el comportamiento por defecto del formulario
     const date = document.getElementById("date").value;
     const sport = document.getElementById("sport").value;
@@ -68,8 +68,8 @@ function getDatesForm(event) {
     const distance = obtainDistance(port); // Llamar y guardar la distancia
 
     // Calcular la velocidad
-    const velocity = averageSpeed(distance, totalMinutes); 
-
+    // const velocity = averageSpeed(distance, totalMinutes); 
+    const velocity = 2
     // Crear el objeto de actividad
     const activityObject = {
         userId: 1,
@@ -77,26 +77,74 @@ function getDatesForm(event) {
         port: port,
         date: date,
         time: time,
-        velocity: velocity, 
+        velocity: velocity,
         distance: distance,
-        nameActivity: nameActivity,
+        nameActivity: nameActivity
     };
+    try {
+        const response = await fetch("http://localhost:3000/activity", {
+            method: "POST",
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(activityObject),
+        });
 
-    console.log(activityObject); // Mostrar el objeto en la consola
-    document.getElementById("formActivity").reset();
+        if (response.ok) {
+            const result = await response.json();
+            console.log("Activity successfully sent:", result);
+        } else {
+            console.log("Error sending activity:", response.statusText);
+        }
+
+    } catch (error) {
+        console.error("Error:", error);
+        //     }
+        //     fetch("http://localhost:3000/activity", {
+        //         method: "POST",
+        //         headers: {
+        //             'Content-Type': 'application/json',
+        //         },
+        //         body: JSON.stringify(activityObject)
+        //     });
+        //     console.log(activityObject); // Mostrar el objeto en la consola
+        //     document.getElementById("formActivity").reset();
+    }
 }
 
-sendButtomForm.addEventListener("click", (event) => {
-    getDatesForm(event);
-    fetch("http://localhost:3000/activity", {
-        method: "POST",
-        headers: {
-            'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(activityObject)
-    });
-});
+// sendButtomForm.addEventListener("click", async  (event) => {
+//     getDatesForm(event);
+//     const myHeaders = create_headers();
 
+//     var requestOptions = {
+//         method: "POST",
+//         headers: myHeaders,
+//         body: activityObject,
+//         redirect: "follow",
+//     };
+
+//     let json;
+
+//     try {
+//         const response = await fetch(
+
+//             "http://localhost:3000/activity",
+//             requestOptions
+//         );
+//         json = await response.json();
+
+
+//     }
+
+//     catch (error) {
+//         if (error instanceof SyntaxError) {
+//             // Unexpected token < in JSON
+//             console.log("There was a SyntaxError", error);
+//         } else {
+//             console.log("There was an error", error);
+//         }
+//     }
+// })
 
 
 // // Llamamos a la función para enviar la actividad

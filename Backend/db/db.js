@@ -7,12 +7,12 @@
 //     port:3306,
 //     database: "timeTrack",
 // })
-// import {mysql} from "mysql2";
-
-
+// import { pool } from "mysql2";
 // import mysql from "mysql2";
 import mysql from 'mysql2';
 // const {mysql} = pkg;
+
+
 
 export default class Connection { 
 
