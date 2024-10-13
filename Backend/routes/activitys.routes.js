@@ -1,13 +1,12 @@
-import {Router} from "express";
-import {getActivity} from "../controllers/activitys.controllers.js";
-import {createActivity} from "../controllers/activitys.controllers.js";
-import {updateActivity} from "../controllers/activitys.controllers.js";
-import {deleteActivity} from "../controllers/activitys.controllers.js";
+import { Router } from "express";
+import { getActivityId, getActivity, createActivity, updateActivity, deleteActivity } from "../controllers/activitys.controllers.js";
 
 
 const router = Router()
 
-router.get("/activity", getActivity)
+router.get("/activity/:id", getActivityId)
+
+router.get("/activity", getActivity);
 
 router.post("/activity", createActivity)
 
