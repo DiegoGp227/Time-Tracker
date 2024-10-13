@@ -10,9 +10,9 @@ router.get("/activity", getActivity);
 
 router.post("/activity", createActivity)
 
-router.put("/activity", updateActivity)
+router.put("/activity/:id", updateActivity)
 
-router.delete("/activity", deleteActivity)
+router.delete("/activity/:id", deleteActivity)
 
 export default router
 
