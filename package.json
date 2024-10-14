@@ -4,13 +4,15 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": "nodemon ./Backend/scripts/index.js"
+    "dev": "nodemon ./Backend/scripts/index.js",
+    "start": "node ./Backend/scripts/index.js"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "description": "",
   "dependencies": {
+    "cors": "^2.8.5",
     "datatables.net": "^2.1.8",
     "express": "^4.21.0",
     "mysql2": "^3.11.3"

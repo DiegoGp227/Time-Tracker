@@ -26,156 +26,157 @@ document.addEventListener("click", function (e) {
 })
 
 
+// const sendButtomForm = document.getElementById("sendButtomForm");
+
+// let activityObject = {};
+// let distance = 12.5
+
+// // function timeToHours(time) {
+// //     const timeParts = time.split(":"); // Divide la cadena en partes
+// //     const hours = parseInt(timeParts[0]) || 0; // Convierte a número o usa 0 si no es válido
+// //     const minutes = parseInt(timeParts[1]) || 0; // Convierte a número o usa 0 si no es válido
+// //     const seconds = parseInt(timeParts[2]) || 0; // Convierte a número o usa 0 si no es válido
+    
+// //     return hours + minutes / 60 + seconds / 3600; // Devuelve el tiempo en horas
+// // }
+
+// // function speedCalculation(distance,time) {
+// //     return speed = distance/time;
+// // }
+
+
+// ////Obtiene los datos del form
+
+// function getDatesForm(event) {
+//     event.preventDefault();
+//     const date = document.getElementById("date").value;
+//     const sport = document.getElementById("sport").value;
+//     const activityName = document.getElementById("activityName").value;
+//     const time = document.getElementById("time").value;
+//     const port = document.getElementById("port").value;
+    
+//     const speed = 23;
+//     const distance = 10;
+
+//     activityObject = {
+//         userId:1,
+//         sportId: sport,
+//         portId: port,
+//         activityDate: date,
+//         activityTime: time,
+//         averageSpeed : speed,
+//         activityName: activityName
+//     };
+    
+//     document.getElementById("formActivity").reset();
+// }
+
+// function sendFormActivities (activityObject) {
+//     fetch("http://localhost:3000/activity", {
+//         method:"post",
+//         headers: {
+//             'Content-Type': 'application/json',
+//         },
+//         body: JSON.stringify(activityObject)
+//     })
+// }
+
+// sendButtomForm.addEventListener("click", (event) => {
+//     getDatesForm(event);
+//     // speedCalculation(distance,time)
+//     sendFormActivities(activityObject)
+// });
+
+// Expandable profile picture
+function perfil() {
+    const menuPerfil = document.getElementById("menuPerfil");
+    menuPerfil.style.display = (menuPerfil.style.display === "flex") ? "none" : "flex";
+}
+
+function menuForm() {
+    const menuForm = document.getElementById("menuForm");
+    menuForm.style.display = (menuForm.style.display === "flex") ? "none" : "flex";
+}
+
+document.addEventListener("click", function (e) {
+    const menuPerfil = document.getElementById("menuPerfil");
+    const menuForm = document.getElementById("menuForm");
+
+    if (menuPerfil.style.display === "flex" && !menuPerfil.contains(e.target) && !e.target.closest('button')) {
+        menuPerfil.style.display = "none";
+    }
+    
+    if (menuForm.style.display === "flex" && !menuForm.contains(e.target) && !e.target.closest('button')) {
+        menuForm.style.display = "none";
+    }
+});
+
 const sendButtomForm = document.getElementById("sendButtomForm");
 
-let datesObjet = {};
+let distance = 12.5;
 
-////Obtiene los datos del form
+// Function to obtain the data from the form
 function getDatesForm(event) {
-    
     event.preventDefault();
     const date = document.getElementById("date").value;
     const sport = document.getElementById("sport").value;
-    const nameActivity = document.getElementById("nameActivity").value;
-    const time = document.getElementById("time").value;
-    const velocity = document.getElementById("velocity").value;
+    const activityName = document.getElementById("activityName").value; // corregido
+    const time = document.getElementById("time").value; // Asegúrate que esto sea un string como "02:32:12"
     const port = document.getElementById("port").value;
-    
-    activityObject = {
-        date: date,
-        sport: sport,
-        nameActivity: nameActivity,
-        time: time,
-        velocity: velocity,
-        port: port
-    };
 
+    // Calcular la velocidad aquí
+    const timeInHours = timeToHours(time); // Usa esta función para convertir el tiempo
+    const averageSpeed = speedCalculation(distance, timeInHours); // Calcular la velocidad
+
+    const activityObject = {
+        userId: 1,
+        sportId: sport,
+        portId: port,
+        activityDate: date,
+        activityTime: time,
+        averageSpeed: averageSpeed, // Se calcula aquí
+        activityName: activityName
+    };
+    
+    // Reiniciar el formulario
     document.getElementById("formActivity").reset();
+    
+    return activityObject; // Retornar el objeto para usarlo después
 }
 
-sendButtomForm.addEventListener("click", (event) => {
-    getDatesForm(event);
-    
-    fetch("http://localhost:3000/activity", {
-        method:"post",
+// Convierte el tiempo a horas
+function timeToHours(time) {
+    const timeParts = time.split(":");
+    const hours = parseInt(timeParts[0]) || 0;
+    const minutes = parseInt(timeParts[1]) || 0;
+    const seconds = parseInt(timeParts[2]) || 0;
+
+    return hours + minutes / 60 + seconds / 3600;
+}
+
+// Calcula la velocidad
+function speedCalculation(distance, time) {
+    return distance / time; // Calcula y retorna la velocidad
+}
+
+// Función para enviar actividades
+function sendFormActivities(activityObject) {
+    fetch("http://localhost:3000/api/activity", {
+        method: "POST",
         headers: {
             'Content-Type': 'application/json',
         },
         body: JSON.stringify(activityObject)
     })
+    .then(response => response.json())  // Procesar la respuesta como JSON
+    .then(data => console.log('Success:', data))  // Manejar la respuesta exitosa
+    .catch((error) => console.error('Error:', error));  // Capturar errores
+}
+
+
+sendButtomForm.addEventListener("click", (event) => {
+    const activityObject = getDatesForm(event); // Obtener el objeto aquí
+    if (activityObject) { // Verifica que el objeto no esté vacío
+        sendFormActivities(activityObject);
+    }
 });
-
-
-// // Llamamos a la función para enviar la actividad
-// sendActivity();
-
-// console.log(jsonDataActivity);
-
-// // Datos a enviar al servidor
-// const data = {
-//     key1: "valor1",
-//     key2: "valor2"
-// };
-
-// // Función para enviar datos al servidor
-// async function sendData() {
-//     try {
-//         const response = await fetch('http://localhost:3000/activity', { // URL del servidor
-//             method: 'POST', // Tipo de solicitud
-//             headers: {
-//                 'Content-Type': 'application/json', // Tipo de contenido
-//             },
-//             body: JSON.stringify(data) // Convertir los datos a JSON
-//         });
-
-//         if (response.ok) {
-//             const result = await response.json(); // Convertir la respuesta a JSON
-//             console.log('Datos enviados:', result); // Mostrar resultado
-//         } else {
-//             console.error('Error al enviar los datos:', response.status); // Manejar errores
-//         }
-//     } catch (error) {
-//         console.error('Error en la solicitud:', error); // Manejar errores de conexión
-//     }
-// }
-
-// // Llamar a la función para enviar datos
-// sendData();
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-// //Añadir acrividades a la tabla
-
-// let rows = [];
-
-// function newRow() {
-//     // Obtener los valores del formulario
-//     const date = document.getElementById("date").value;
-//     const sport = document.getElementById("sport").value;
-//     const nameActivity = document.getElementById("nameActivity").value;
-//     const time = document.getElementById("time").value;
-//     const velocity = document.getElementById("velocity").value;
-//     const port = document.getElementById("port").value;
-
-//     // Agregar la nueva fila al array
-//     rows.push({
-//         date: date,
-//         sport: sport,
-//         nameActivity: nameActivity,
-//         time: time,
-//         velocity: velocity,
-//         port: port,
-//     });
-
-//     // Inyectar las filas en el contenedor
-//     injectrow();
-
-//     // Limpiar el formulario después de agregar la fila
-//     document.getElementById("formActivity").reset();
-// }
-
-
-// // Llamamos a la función para enviar la actividad
-// sendActivity();
-
-
-// console.log(dataActivity)
-
-// function injectrow() {
-//     const tbody = document.getElementById("tbody");
-//     tbody.innerHTML = ""; // Limpiar el contenido del tbody antes de inyectar nuevas filas
-
-//     // Recorrer las filas y añadirlas al tbody
-//     rows.forEach((row) => {
-//         const rowLet = document.createElement("tr");
-//         rowLet.innerHTML = `
-//             <td>${row.date}</td>
-//             <td>${row.sport}</td>
-//             <td>${row.name}</td>
-//             <td>${row.time}</td>
-//             <td>${row.velocity}</td>
-//             <td>${row.port}</td>
-//         `;
-//         tbody.appendChild(rowLet);
-//     });
-// }
-
-// // Ejecutar la función cuando la página cargue
-// window.onload = injectrow;
-
-// const form = document.getElementById('formActivity');
-// form.addEventListener('submit', (event) => {
-//     event.preventDefault(); // Evitar la recarga de la página
-//     newRow();
-// });
