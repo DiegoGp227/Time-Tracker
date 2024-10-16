@@ -17,32 +17,9 @@ export const getActivityId = async (req, res) => {
   res.json(rows[0])
 }
 
-// export const createActivity = async (req, res) => {
-//   const { userId, sportId, portId, activityDate, activityTime, averageSpeed, activityName} = req.body;
-//   const [rows] = await pool.query(
-//     "INSERT INTO activities ( user_id, sport_id, port_id, activity_date, activity_time, average_speed, activity_name) VALUES (?, ?, ?, ?, ?, ?, ? )", [userId, sportId, portId, activityDate, activityTime, averageSpeed, activityName]
-//   );
-
-//   res.send({
-//     id: rows.insertId,
-//   });
-// };
-
-// export const createActivity = async (req, res) => {
-//   const { user_id, sport_id, port_id, activity_date, activity_time, average_speed, activity_name } = req.body;
-//   const [rows] = await pool.query(
-//     "INSERT INTO activities (user_id, sport_id, port_id, activity_date, activity_time, average_speed, activity_name) VALUES (?, ?, ?, ?, ?, ?, ?)",
-//     [user_id, sport_id, port_id, activity_date, activity_time, average_speed, activity_name]
-//   );
-
-//   res.send({
-//     id: rows.insertId,
-//   });
-// };
-
 export const createActivity = async (req, res) => {
   const { userId, sportId, portId, activityDate, activityTime, averageSpeed, activityName } = req.body;
-  
+  console.log(req.body)
   const [rows] = await pool.query(
     "INSERT INTO activities (user_id, sport_id, port_id, activity_date, activity_time, average_speed, activity_name) VALUES (?, ?, ?, ?, ?, ?, ?)",
     [userId, sportId, portId, activityDate, activityTime, averageSpeed, activityName]
@@ -52,7 +29,6 @@ export const createActivity = async (req, res) => {
     id: rows.insertId,
   });
 };
-
 
 export const updateActivity = async (req, res) => {
   const { id } = req.params
@@ -71,11 +47,8 @@ export const updateActivity = async (req, res) => {
 
 export const deleteActivity = async (req, res) => {
   const [result] = await pool.query("DELETE FROM activities WHERE activity_id = ?", [req.params.id])
-
-  res.send("Actividad eliminada")
-
-  if (rows.length <= 0) return res.status(404).json({
+  if (result.affectedRows === 0) return res.status(404).json({
     message: "Activity not found"
   })
-  res.json(rows[0])
+  res.send("Actividad eliminada")
 } 

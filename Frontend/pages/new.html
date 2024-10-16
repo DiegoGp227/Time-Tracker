@@ -1,45 +1,56 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="icon" href="/Frontend/assets/img/nav/pixelcut-export-removebg-preview.png" type="image/x-icon">
     <title>New</title>
+    <link rel="stylesheet" href="../styles/newPasses.css">
+    <link rel="stylesheet" href="../styles/global.css">
 </head>
+
 <body>
-    <div>
-        <form action="">
-            <label for="portName">nombre</label>
-            <input type="text" id="portName">
+    <div id="divForm">
+        <div id = "divTitle">
+            <h2>Nuevo Puerto</h2>
+        </div>
+        <div id="divFormMain">
+            <form action="">
+                <label for="portName">nombre</label>
+                <input type="text" id="portName">
 
-            <label for="sport">Puerto</label>
-            <select name="sport" id="sport">
-                <option value="" disabled selected>Seleccione un Deporte</option>
-                <option value="1">Ciclismo</option>
-                <option value="2">Runnig</option>
-            </select><br>
+                <label for="sport">Puerto</label>
+                <select name="sport" id="sport">
+                    <option value="" disabled selected>Seleccione un Deporte</option>
+                    <option value="1">Ciclismo</option>
+                    <option value="2">Runnig</option>
+                </select><br>
 
-            <label for="altitude">altitud</label>
-            <input type="number" id="altitude">
+                <label for="altitude">altitud</label>
+                <input type="number" id="altitude">
 
-            <label for="distance">distancia</label>
-            <input type="number" id="distance">
+                <label for="distance">distancia</label>
+                <input type="number" id="distance">
 
-            <label for="maximumInclination">inclinacion maxima</label>
-            <input type="number" id="maximumInclination">
+                <label for="maximumInclination">inclinacion maxima</label>
+                <input type="number" id="maximumInclination">
 
-            <label for="averageInclination">inclinacion promedio</label>
-            <input type="number" id="averageInclination">
-            
-            <label for="ubication">ubicacion</label>
-            <input type="text" id="ubication">
+                <label for="averageInclination">inclinacion promedio</label>
+                <input type="number" id="averageInclination">
 
+                <label for="ubication">ubicacion</label>
+                <input type="text" id="ubication">
 
-            <button type="submit" id="sendButtomPort">Enviar</button>
-        </form>
+                <label for="photo">Url imagen</label>
+                <input type="text" id="photo">
+
+                <button type="submit" id="sendButtomPort">Enviar</button>
+            </form>
+        </div>
     </div>
 
-    <script src="../scripts/newPort.js"></script>
+    <script src="../scripts/newPasses.js"></script>
 </body>
-</html>
 
+</html>

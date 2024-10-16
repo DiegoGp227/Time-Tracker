@@ -22,10 +22,13 @@ CREATE TABLE mountain_passes (
     altitude INT,
     distance DECIMAL(6,2),
     max_inclination DECIMAL(4,2),
-    avg_inclination DECIMAL(4,2), -- Reemplazo de min_inclination
+    avg_inclination DECIMAL(4,2),
     location VARCHAR(100),
-    photo_url VARCHAR(255) NULL
+    photo_url VARCHAR(255) NULL,
+    sport_id INT,  -- Nueva columna para asociar con la tabla sports
+    FOREIGN KEY (sport_id) REFERENCES sports(sport_id)  -- Clave foránea que referencia a sports
 );
+
 
 -- Table to store user activities
 CREATE TABLE activities (

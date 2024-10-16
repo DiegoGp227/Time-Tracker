@@ -1,4 +1,4 @@
-//expandable profile picture
+//// Maneja el cerrar y abrir los menu expandibles
 function perfil() {
     const menuPerfil = document.getElementById("menuPerfil")
     if (menuPerfil.style.display === "flex") {
@@ -20,102 +20,55 @@ document.addEventListener("click", function (e) {
     if (menuPerfil.style.display === "flex" && !menuPerfil.contains(e.target) && !e.target.closest('button')) {
         menuPerfil.style.display = "none";
     }
-    
+
     if (menuForm.style.display === "flex" && !menuForm.contains(e.target) && !e.target.closest('button'))
         menuForm.style.display = "none";
 })
 
 
-// const sendButtomForm = document.getElementById("sendButtomForm");
-
-// let activityObject = {};
-// let distance = 12.5
-
-// // function timeToHours(time) {
-// //     const timeParts = time.split(":"); // Divide la cadena en partes
-// //     const hours = parseInt(timeParts[0]) || 0; // Convierte a número o usa 0 si no es válido
-// //     const minutes = parseInt(timeParts[1]) || 0; // Convierte a número o usa 0 si no es válido
-// //     const seconds = parseInt(timeParts[2]) || 0; // Convierte a número o usa 0 si no es válido
-    
-// //     return hours + minutes / 60 + seconds / 3600; // Devuelve el tiempo en horas
-// // }
-
-// // function speedCalculation(distance,time) {
-// //     return speed = distance/time;
-// // }
-
-
-// ////Obtiene los datos del form
-
-// function getDatesForm(event) {
-//     event.preventDefault();
-//     const date = document.getElementById("date").value;
-//     const sport = document.getElementById("sport").value;
-//     const activityName = document.getElementById("activityName").value;
-//     const time = document.getElementById("time").value;
-//     const port = document.getElementById("port").value;
-    
-//     const speed = 23;
-//     const distance = 10;
-
-//     activityObject = {
-//         userId:1,
-//         sportId: sport,
-//         portId: port,
-//         activityDate: date,
-//         activityTime: time,
-//         averageSpeed : speed,
-//         activityName: activityName
-//     };
-    
-//     document.getElementById("formActivity").reset();
-// }
-
-// function sendFormActivities (activityObject) {
-//     fetch("http://localhost:3000/activity", {
-//         method:"post",
-//         headers: {
-//             'Content-Type': 'application/json',
-//         },
-//         body: JSON.stringify(activityObject)
-//     })
-// }
-
-// sendButtomForm.addEventListener("click", (event) => {
-//     getDatesForm(event);
-//     // speedCalculation(distance,time)
-//     sendFormActivities(activityObject)
-// });
-
-// Expandable profile picture
-function perfil() {
-    const menuPerfil = document.getElementById("menuPerfil");
-    menuPerfil.style.display = (menuPerfil.style.display === "flex") ? "none" : "flex";
+//// Agrega rows al la tabla de actividades
+var dataTable;
+// llama las actividades del backend 
+function getDataTable() {
+    fetch("http://localhost:3000/api/activity", {
+        method: "GET",
+        headers: {
+            'Content-Type': 'application/json'
+        }
+    })
+        .then(response => response.json())
+        .then(data => {
+            dataTable = data;
+            addRowsTable(dataTable);
+        })
+        .catch(error => {
+            console.error('Error al obtener los datos:', error);
+        });
 }
+// Añade la informacion que se trajo a la tabla
+function addRowsTable(dataTable) {
+    tbody.innerHTML = "";
 
-function menuForm() {
-    const menuForm = document.getElementById("menuForm");
-    menuForm.style.display = (menuForm.style.display === "flex") ? "none" : "flex";
+    dataTable.forEach(item => {
+        tbody.innerHTML += `
+      <tr>
+          <td>${item.sportId}</td>
+          <td>${item.port_id}</td>
+          <td>${item.activity_date}</td>
+          <td>${item.activity_time}</td>
+          <td>${item.average_speed}</td>
+          <td>${item.activity_name}</td>
+      </tr>
+    `;
+    });
 }
-
-document.addEventListener("click", function (e) {
-    const menuPerfil = document.getElementById("menuPerfil");
-    const menuForm = document.getElementById("menuForm");
-
-    if (menuPerfil.style.display === "flex" && !menuPerfil.contains(e.target) && !e.target.closest('button')) {
-        menuPerfil.style.display = "none";
-    }
-    
-    if (menuForm.style.display === "flex" && !menuForm.contains(e.target) && !e.target.closest('button')) {
-        menuForm.style.display = "none";
-    }
+// Establece que al recargar la pagina llame las funciones anteriores para agregar las actividades a la tabla
+document.addEventListener("DOMContentLoaded", function () {
+    getDataTable();
 });
 
-const sendButtomForm = document.getElementById("sendButtomForm");
 
-let distance = 12.5;
-
-// Function to obtain the data from the form
+//// Obtiene los datos del formulario, opera la velocidad y crea el JSON
 function getDatesForm(event) {
     event.preventDefault();
     const date = document.getElementById("date").value;
@@ -124,42 +77,46 @@ function getDatesForm(event) {
     const time = document.getElementById("time").value; // Asegúrate que esto sea un string como "02:32:12"
     const port = document.getElementById("port").value;
 
-    // Calcular la velocidad aquí
-    const timeInHours = timeToHours(time); // Usa esta función para convertir el tiempo
-    const averageSpeed = speedCalculation(distance, timeInHours); // Calcular la velocidad
+    // Trae la distancia del puerto
+    fetch(`http://localhost:3000/api/passes/${port}`, {
+        method: "GET",
+        headers: {
+            'Content-Type': 'application/json'
+        }
+    })
+        .then(response => response.json())
+        .then(data => {
+            const distance = data;
+            console.log(distance.distance)
 
-    const activityObject = {
-        userId: 1,
-        sportId: sport,
-        portId: port,
-        activityDate: date,
-        activityTime: time,
-        averageSpeed: averageSpeed, // Se calcula aquí
-        activityName: activityName
-    };
-    
-    // Reiniciar el formulario
-    document.getElementById("formActivity").reset();
-    
-    return activityObject; // Retornar el objeto para usarlo después
+            // Calcular la velocidad promedio
+            const hours = timeToHours(time);
+            const averageSpeed = speedCalculation(distance.distance, hours);
+
+            // Crea el objeto JSON para enviar
+            const activityObject = {
+                userId: 1,
+                sportId: sport,
+                portId: port,
+                activityDate: date,
+                activityTime: time,
+                averageSpeed: averageSpeed,
+                activityName: activityName
+            };
+
+            // Reiniciar el formulario
+            document.getElementById("formActivity").reset();
+
+            // Retornar el objeto para usarlo después
+            sendFormActivities(activityObject);
+            console.log(activityObject);
+        })
+        .catch(error => {
+            console.error('Error al obtener los datos:', error);
+        });
 }
 
-// Convierte el tiempo a horas
-function timeToHours(time) {
-    const timeParts = time.split(":");
-    const hours = parseInt(timeParts[0]) || 0;
-    const minutes = parseInt(timeParts[1]) || 0;
-    const seconds = parseInt(timeParts[2]) || 0;
-
-    return hours + minutes / 60 + seconds / 3600;
-}
-
-// Calcula la velocidad
-function speedCalculation(distance, time) {
-    return distance / time; // Calcula y retorna la velocidad
-}
-
-// Función para enviar actividades
+// Envía el JSON al servidor para que se procese
 function sendFormActivities(activityObject) {
     fetch("http://localhost:3000/api/activity", {
         method: "POST",
@@ -168,15 +125,15 @@ function sendFormActivities(activityObject) {
         },
         body: JSON.stringify(activityObject)
     })
-    .then(response => response.json())  // Procesar la respuesta como JSON
-    .then(data => console.log('Success:', data))  // Manejar la respuesta exitosa
-    .catch((error) => console.error('Error:', error));  // Capturar errores
+        .then(response => response.json()) 
+        .then(data => console.log('Success:', data))  
+        .catch((error) => console.error('Error:', error)); 
 }
 
+// Trae el boton 
+const sendButtonForm = document.getElementById("sendButtomForm");
 
-sendButtomForm.addEventListener("click", (event) => {
-    const activityObject = getDatesForm(event); // Obtener el objeto aquí
-    if (activityObject) { // Verifica que el objeto no esté vacío
-        sendFormActivities(activityObject);
-    }
+// Maneja el click del boton para captar, operar y enviar los datos del form
+sendButtonForm.addEventListener("click", (event) => {
+    getDatesForm(event); 
 });

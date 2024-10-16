@@ -25,6 +25,7 @@
             <li id="singIn"><a href="puertos.html">Puertos</a></li>
         </ul>
         <div class="menu">
+            <a href="../pages/perfil.html">McDiego27</a>
             <button onclick="perfil()" id="menu-button">
                 <img src="../assets/img/nav/Cartman.webp" alt="Menu Icon" id="user">
             </button>
@@ -34,7 +35,7 @@
         <div id="menuPerfil">
             <div id="one">
                 <img src="/Frontend/assets/img/nav/Cartman.webp" alt="">
-                <a href="perfil.html">Diego Gongora</a>
+                <a href="perfil.html">McDiego27</a>
             </div>
             <hr>
             <div>
@@ -48,7 +49,9 @@
             </div>
             <div id="divEnd">
                 <div id="perfilButtom">
-                    <button>Ir a perfil</button>
+                    <button>
+                        <a href="../pages/perfil.html">Ir a perfil</a>    
+                    </button>
                 </div>
             </div>
         </div>
@@ -56,12 +59,12 @@
     <table id="example" class="display" style="width:100%">
         <thead>
             <tr>
-                <th>Fecha</th>
                 <th>Deporte</th>
-                <th>Titulo</th>
-                <th>Tiempo</th>
-                <th>Vel Promedio</th>
                 <th>Puerto</th>
+                <th>Fecha</th>
+                <th>Tiempo</th>
+                <th>Velocidad Promedio</th>
+                <th>Titulo</th>
             </tr>
         </thead>
         <tbody id="tbody">
@@ -90,10 +93,6 @@
                 <input type="text" id="time" name="time" placeholder="00:00:00"
                     pattern="^([0-9]{1,2}):([0-5][0-9]):([0-5][0-9])$" required><br>
 
-
-                <label for="velocity">Velocidad Promedio</label>
-                <input type="number" id="velocity" required> <br>
-
                 <label for="port">Puerto</label>
                 <select name="port" id="port">
                     <option value="" disabled selected>Seleccione un puerto</option>
@@ -109,6 +108,7 @@
     <div id="divNewActivity" >
         <button onclick="menuForm()" id="newActivity">Añadir Actividad</button>
     </div>
+
 
     <!-- jQuery y DataTables JS -->
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>

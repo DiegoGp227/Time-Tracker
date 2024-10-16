@@ -1,7 +1,7 @@
 import express from "express";
 import indexRoutes from "../routes/index.routes.js";
 import activityRoutes from "../routes/activitys.routes.js";
-// import portRoutes from "../routes/port.routes.js";
+import passesRoutes from "../routes/port.routes.js";
 import cors from "cors";
 
 const app = express();
@@ -14,7 +14,7 @@ app.listen(port);
 app.use(indexRoutes);
 
 app.use("/api" ,activityRoutes);
-// app.use("/api" ,portRoutes);
+app.use("/api" ,passesRoutes);
 
 
 

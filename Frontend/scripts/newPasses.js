@@ -12,6 +12,7 @@ async function getDatesForm(event) {
     const averageInclination = document.getElementById("averageInclination").value;
     const ubication = document.getElementById("ubication").value;
 
+    const photoUrl = null
     // Crear el objeto de actividad
     portObject = {
         portName: portName,
@@ -21,12 +22,13 @@ async function getDatesForm(event) {
         maximumInclination: maximumInclination,
         averageInclination: averageInclination,
         ubication: ubication,
+        photoUrl: photoUrl
     };
 }
 
 async function sendPort(portObject) {
     console.log(portObject)
-    const response = await fetch("http://localhost:3000/api/port", {
+    const response = await fetch("http://localhost:3000/api/passes", {
         method: "POST",
         headers: {
             'Content-Type': 'application/json',
