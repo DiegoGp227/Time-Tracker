@@ -21,6 +21,7 @@ document.addEventListener("click", function (e) {
         menuPerfil.style.display = "none";
     }
 
+
     if (menuForm.style.display === "flex" && !menuForm.contains(e.target) && !e.target.closest('button'))
         menuForm.style.display = "none";
 })

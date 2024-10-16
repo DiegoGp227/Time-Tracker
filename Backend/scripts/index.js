@@ -6,7 +6,10 @@ import cors from "cors";
 
 const app = express();
 const port = 3000;
+const app = express();
+const port = 3000;
 
+app.use(express.json());
 app.use(express.json());
 app.use(cors());
 app.listen(port);
@@ -25,6 +28,7 @@ app.use((req, res, next) => {
 })
 
 
+console.log("hello console");
 console.log("hello console");
 
 ////Verificar la coneccion a la base de datos
